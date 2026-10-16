@@ -12,14 +12,16 @@ Verbesserungswürdig ist die Konfliktauflösung, die bis jetzt nur durch das Ste
 
 ## Ausführen:
 Im Terminal:
-main.cpp und flugzeuge.txt in einen Ordner legen. Weitere Befehle im Terminal ausführen.
-```g++ -std=c++20 main.cpp -o simulation```
-```./simulation```
+main.cpp und flugzeuge.txt in einen Ordner legen. Ordner öffnen. Weitere Befehle im Terminal ausführen.
+```
+g++ -std=c++20 main.cpp -o simulation
+./simulation
+```
 
 Alternativ main.cpp und flugzeuge.txt Replit oder OnlineGDB einfügen und 'Run' drücken.
 
 ## Beispielausgabe:
-
+```
 Warnung: LH123 und DL321 in 1 Minute(n) im Konflikt
 Minute 1: LH123 und DL321: Konflikt Abstand 3.3541 NM
  -> Flugzeug Nummer DL321 steigt um 600 ft
@@ -27,3 +29,4 @@ LH123: Höhe: 35000 ft
 BA456: Höhe: 30000 ft
 AF789: Höhe: 40000 ft
 DL321: Höhe: 36000 ft
+```
