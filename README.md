@@ -1,6 +1,6 @@
 # Flugsicherung-simulation
 ## Überblick
-Das Programm dient der Simulation von mehreren Flugzeugen im Luftraum, sowie der Erkennung und Behebung möglicher Abstand Konflikte.`
+Das Programm dient der Simulation von mehreren Flugzeugen im Luftraum, sowie der Erkennung und Behebung möglicher Abstand Konflikte.
 ## Konflikterkennung
 Die Konflikterkennung prüft jede simulierte Minute alle einzigartigen Paare auf den vertikalen und horizontalen Mindestabstand. Ist der vertikale Abstand kleiner als 1000 ft und gleichzeitig der horizontale Abstand unter 5 NM, steigt das höhere Flugzeug auf einen Höhenunterschied von 1000 ft.
 ## Aufbau
@@ -18,7 +18,7 @@ g++ -std=c++20 main.cpp -o simulation
 ./simulation
 ```
 
-Alternativ main.cpp und flugzeuge.txt Replit oder OnlineGDB einfügen und 'Run' drücken.
+Alternativ main.cpp und flugzeuge.txt in Replit oder OnlineGDB einfügen und 'Run' drücken.
 
 ## Beispielausgabe:
 ```
