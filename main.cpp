@@ -5,54 +5,72 @@
 #include<cmath>
 #include<fstream>
 
-struct Flugzeug {
+const int MIN_HOEHENABSTAND_FT = 1000;
+const double MIN_HORIZONTALABSTAND_NM = 5.0;
+
+class Flugzeug {
+    private:
     std::string flugnummer;
     int hoehe;
     double x;
     double y;
     double vx;
     double vy;
-};
+    
+    public:
+    Flugzeug(std::string nr, int h, double px, double py, double geschwX, double geschwY) {
+        flugnummer = nr;
+        hoehe = h;
+        x = px;
+        y = py;
+        vx = geschwX;
+        vy = geschwY;
+    }
 
-void zeigeHoehe (const Flugzeug& f)
-{
-        std::cout<<f.flugnummer<<": "<<"Höhe: "<<f.hoehe<<" ft"<<std::endl;
-
-}
-
-bool vertikalerKonflikt(const Flugzeug& a, const Flugzeug& b)
-{
-    int unterschied = std::abs(a.hoehe - b.hoehe);
-    return unterschied < 1000;
-}
-
-double horizontalerAbstand(const Flugzeug& a, const Flugzeug& b)
-{
-    double dx = a.x - b.x;
-    double dy = a.y - b.y;
+    
+    void zeigeHoehe () const {
+    std::cout<<flugnummer<<": "<<"Höhe: "<<hoehe<<" ft"<<std::endl;
+    }
+    
+    void steige(int ft) {
+    hoehe = hoehe + ft;
+    }
+    
+    void bewege() {
+    x = x + vx;
+    y = y + vy;
+    }
+    
+    bool vertikalerKonflikt(const Flugzeug& anderes) const {
+    int unterschied = std::abs(hoehe - anderes.hoehe);
+    return unterschied < MIN_HOEHENABSTAND_FT;
+    }
+    
+    double horizontalerAbstand(const Flugzeug& anderes) const {
+    double dx = x - anderes.x;
+    double dy = y - anderes.y;
     return std::sqrt(dx * dx + dy * dy);
-}
+    }
+    
+    std::string getFlugnummer() const {
+        return flugnummer;
+    }
+    
+    int getHoehe() const {
+        return hoehe;
+    }
+};
 
 bool konflikt(const Flugzeug& a, const Flugzeug& b)
 {
-    return vertikalerKonflikt(a, b) && horizontalerAbstand(a, b) < 5.0;
+    return a.vertikalerKonflikt(b) && a.horizontalerAbstand(b) < MIN_HORIZONTALABSTAND_NM;
 }
 
-void steige(Flugzeug& f, int ft)
-{
-    f.hoehe = f.hoehe + ft;
-}
-
-void bewege(Flugzeug& f)
-{
-    f.x = f.x + f.vx;
-    f.y = f.y + f.vy;
-}
 
 int minutenBisKonflikt (Flugzeug a, Flugzeug b, int maxMinuten){
     for (int m = 1; m <= maxMinuten; m++){
-        bewege(a);
-        bewege(b);
+        a.bewege();
+        b.bewege();
         if (konflikt(a, b)){
             return m;
         }
@@ -69,48 +87,49 @@ int main ()
     }
     
     std::vector<Flugzeug> flugzeuge;
-    Flugzeug f;
-    while (datei >> f.flugnummer >> f.hoehe >> f.x >> f.y >> f.vx >> f.vy) {
-        flugzeuge.push_back(f);
+    std::string nr;
+    int h;
+    double px, py, geschwX, geschwY;
+    while(datei >> nr >> h >> px >> py >> geschwX >> geschwY) {
+        flugzeuge.push_back(Flugzeug(nr, h, px, py, geschwX, geschwY));
     }
-    
+
     int anzahl = flugzeuge.size();
     
     for (int i = 0; i < anzahl; i++) {
         for (int j = i + 1; j < anzahl; j++) {
             int ergebnis = minutenBisKonflikt(flugzeuge[i], flugzeuge[j], 10);
             if (ergebnis != -1) {
-                std::cout << "Warnung: " << flugzeuge[i].flugnummer << " und "<< flugzeuge[j].flugnummer << " in " << ergebnis<< " Minute(n) im Konflikt" << std::endl;
+                std::cout << "Warnung: " << flugzeuge[i].getFlugnummer() << " und "<< flugzeuge[j].getFlugnummer() << " in " << ergebnis<< " Minute(n) im Konflikt" << std::endl;
             }
         }
     }
-
-    
     for (int minute = 1; minute <= 5; minute++){
         for (Flugzeug& flug : flugzeuge){
-            bewege(flug);
+            flug.bewege();
         }
             for(int i = 0; i < anzahl; i++){
                 for(int j = i + 1; j < anzahl; j++){
                     if(konflikt(flugzeuge[i], flugzeuge[j])){
-                        std::cout<<"Minute "<< minute <<": "<<flugzeuge[i].flugnummer<<" und "<<flugzeuge[j].flugnummer<<": Konflikt Abstand "<<horizontalerAbstand(flugzeuge[i], flugzeuge[j])<<" NM"<<std::endl;
+                        std::cout<<"Minute "<< minute <<": "<<flugzeuge[i].getFlugnummer()<<" und "<<flugzeuge[j].getFlugnummer()<<": Konflikt Abstand "<<flugzeuge[i].horizontalerAbstand(flugzeuge[j])<<" NM"<<std::endl;
                     
-                        int unterschied = std::abs(flugzeuge[i].hoehe - flugzeuge[j].hoehe);
-                        int noetig = 1000 - unterschied;
+                        int unterschied = std::abs(flugzeuge[i].getHoehe() - flugzeuge[j].getHoehe());
+                        int noetig = MIN_HOEHENABSTAND_FT - unterschied;
                     
-                        if (flugzeuge[i].hoehe > flugzeuge[j].hoehe){
-                            std::cout<<" -> Flugzeug Nummer "<<flugzeuge[i].flugnummer<<" steigt um "<<noetig<<" ft"<<std::endl;
-                            steige(flugzeuge[i], noetig);
+                        if (flugzeuge[i].getHoehe() > flugzeuge[j].getHoehe()){
+                            std::cout<<" -> Flugzeug Nummer "<<flugzeuge[i].getFlugnummer()<<" steigt um "<<noetig<<" ft"<<std::endl;
+                            flugzeuge[i].steige(noetig);
                         } else {
-                            std::cout<<" -> Flugzeug Nummer "<<flugzeuge[j].flugnummer<<" steigt um "<<noetig<<" ft"<<std::endl;
-                            steige(flugzeuge[j], noetig);
+                            std::cout<<" -> Flugzeug Nummer "<<flugzeuge[j].getFlugnummer()<<" steigt um "<<noetig<<" ft"<<std::endl;
+                            flugzeuge[j].steige(noetig);
                         }
                     }
                 }
             }
     }
-    for (Flugzeug flug : flugzeuge) {
-        zeigeHoehe(flug);
+    for (const Flugzeug& flug : flugzeuge) {
+        flug.zeigeHoehe();
     }
     return 0;
+    
 }
