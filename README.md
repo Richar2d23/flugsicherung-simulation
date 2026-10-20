@@ -4,11 +4,13 @@ Das Programm dient der Simulation von mehreren Flugzeugen im Luftraum, sowie der
 ## Konflikterkennung
 Die Konflikterkennung prüft jede simulierte Minute alle einzigartigen Paare auf den vertikalen und horizontalen Mindestabstand. Ist der vertikale Abstand kleiner als 1000 ft und gleichzeitig der horizontale Abstand unter 5 NM, steigt das höhere Flugzeug auf einen Höhenunterschied von 1000 ft.
 ## Aufbau
-Das Programm enthält zunächst die Struktur für die Flugzeuge, sowie einige Funktionen. Nach Start werden zuerst Flugzeuge in einem Vektor gespeichert, bevor vor der eigentlichen Simulation eine Vorhersage mittels Kopien aus dem Vektor gestartet wird, ob ein Konflikt auftreten wird. Nach dessen Abschluss startet die Simulation innerhalb einer Minutenschleife und bewegt nun die originalen Flugzeuge im Vektor. Konflikte werden dann durchs Steigen des höheren Flugzeug behoben.
+Flugzeuge werden in der Klasse `Flugzeug` gefasst. Ihre Daten (Flugnummer, Höhe, Position und Geschwindigkeit) sind privat und werden durch einen Konstruktor zugewiesen. Von außen lesbar sind Flugnummer und Höhe über `getFlugnummer()` und `getHoehe()`. Die Höhe ändert sich nur über `steige()`, die Position nur über `bewege()`. Weitere Elementfunktionen prüfen den vertikalen Konflikt und berechnen den horizontalen Abstand zweier Flugzeuge, verbunden werden beide Prüfungen über die Funktion `konflikt`. Die Mindestabstände stehen als Konstanten `MIN_HOEHENABSTAND_FT` und `MIN_HORIZONTALABSTAND_NM` am Anfang der Datei.
+
+Nach Start werden zuerst Flugzeuge in einem Vektor gespeichert, bevor vor der eigentlichen Simulation eine Vorhersage mittels Kopien aus dem Vektor gestartet wird, ob ein Konflikt auftreten wird. Nach dessen Abschluss startet die Simulation innerhalb einer Minutenschleife und bewegt nun die originalen Flugzeuge im Vektor. Konflikte werden dann durchs Steigen des höheren Flugzeug behoben.
 ## Eingabe
 Die Eingabe erfolgt über eine separate Datei flugzeuge.txt, in welcher Flugzeug in Reihenfolge mit Flugnummer, Höhe in Fuß, x-Koordinate und y-Koordinate in nautischen Meilen, sowie Bewegung vx und vy in NM pro Minute gespeichert sind. Das Einlesen der Datei erfolgt über eine while Schleife in den Vektor. Es steht pro Zeile ein Flugzeug, z.B.: 'LH123 35000 0 0 7.5 0'
 ## Verbesserungen
-Verbesserungswürdig ist die Konfliktauflösung, die bis jetzt nur durch das Steigen um den exakt fehlenden Betrag zu 1000 ft Unterschied Konflikte löst. Letzteres wurde bewusst zur Vereinfachung umgesetzt. Außerdem enthält das Programm noch eine Reihe an festen Werten, welche mit Konstanten ersetzt werden könnten, wie etwa die Mindestabstände.
+Verbesserungswürdig ist die Konfliktauflösung, die bis jetzt nur durch das Steigen um den exakt fehlenden Betrag zu 1000 ft Unterschied Konflikte löst. Letzteres wurde bewusst zur Vereinfachung umgesetzt. Außerdem enthält das Programm noch eine Reihe an festen Werten, welche mit Variablen ersetzt werden könnten, wie etwa die Dauer der Vorhersage und die der Simulation.
 
 ## Ausführen:
 Im Terminal:
