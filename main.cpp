@@ -78,8 +78,31 @@ int minutenBisKonflikt (Flugzeug a, Flugzeug b, int maxMinuten){
     return -1;
 }
 
+void pruefe(const std::string& name, bool ok){
+    std::cout<<(ok ? "OK: " : "Fehler: ")<<name<<std::endl;
+}
+
+void testeKonflikt(){
+    Flugzeug t1("T1", 30000, 0, 0, 10, 0);
+    Flugzeug t2("T2", 30000, 100, 0, -10, 0);
+    Flugzeug t3("T3", 35000, 0, 0, 0, 0);
+    pruefe("T1 und T2 Konflikt in 5 Minuten", minutenBisKonflikt(t1, t2, 10) == 5);
+    pruefe("T1 und T3 kein Konflikt in 10 Minuten", minutenBisKonflikt(t1, t3, 10) == -1);
+}
+
+void testeBausteine() {
+    Flugzeug t4("T4", 30000, 0, 0, 10, 0);
+    Flugzeug t5("T5", 30000, 3, 4, -10, 0);
+    t4.steige(500);
+    pruefe("T4 auf 30500 ft", t4.getHoehe() == 30500);
+    pruefe("T4 und T5 5 NM entfernt", std::abs(t4.horizontalerAbstand(t5) - 5.0) < 1e-9);
+}
+
 int main ()
 {
+    testeKonflikt();
+    testeBausteine();
+    
     std::ifstream datei("flugzeuge.txt");
     if (!datei) {
         std::cout << "Datei nicht gefunden" << std::endl;
