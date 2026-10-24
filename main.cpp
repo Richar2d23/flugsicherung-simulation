@@ -26,7 +26,6 @@ class Flugzeug {
         vx = geschwX;
         vy = geschwY;
     }
-
     
     void zeigeHoehe () const {
     std::cout<<flugnummer<<": "<<"Höhe: "<<hoehe<<" ft"<<std::endl;
@@ -154,5 +153,4 @@ int main ()
         flug.zeigeHoehe();
     }
     return 0;
-    
 }
