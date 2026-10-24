@@ -10,8 +10,7 @@ Zum Programmstart laufen vier automatische Test, die die Konflikt Vorhersage, da
 ## Eingabe
 Die Eingabe erfolgt über eine separate Datei flugzeuge.txt, in welcher Flugzeug in Reihenfolge mit Flugnummer, Höhe in Fuß, x-Koordinate und y-Koordinate in nautischen Meilen, sowie Bewegung vx und vy in NM pro Minute gespeichert sind. Das Einlesen der Datei erfolgt über eine while Schleife in den Vektor. Es steht pro Zeile ein Flugzeug, z.B.: 'LH123 35000 0 0 7.5 0'
 ## Verbesserungen
-Verbesserungswürdig ist die Konfliktauflösung, die bis jetzt nur durch das Steigen um den exakt fehlenden Betrag zu 1000 ft Unterschied Konflikte löst. Letzteres wurde bewusst zur Vereinfachung umgesetzt. Außerdem enthält das Programm noch eine Reihe an festen Werten, welche mit Variablen ersetzt werden könnten, wie etwa die Dauer der Vorhersage und die der Simulation.
-
+Verbesserungswürdig ist die Konfliktauflösung, die bis jetzt nur durch das Steigen um den exakt fehlenden Betrag zu 1000 ft Unterschied Konflikte löst. Letzteres wurde bewusst zur Vereinfachung umgesetzt. Zudem führt die einmalige Prüfung auf Konflikte pro Minute dazu, dass bestimmte Konflikte nicht erkannt werden, sofern sie innerhalb des Prüfintervalls stattfinden.
 ## Ausführen:
 Im Terminal:
 main.cpp und flugzeuge.txt in einen Ordner legen. Ordner öffnen. Weitere Befehle im Terminal ausführen.
